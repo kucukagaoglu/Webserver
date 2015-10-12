@@ -4,7 +4,7 @@
 import os
 import glob
 import time
-
+import MySQLdb
 import datetime
 import sys
 
@@ -16,6 +16,9 @@ import serial
 
 port=serial.Serial("/dev/ttyUSB0",9600,timeout=2)
 port.flushInput()
+
+db = MySQLdb.connect("localhost","root","root","test_zo" )
+cursor = db.cursor()
 #DHT11 = 11
 t=0
 h=0
@@ -85,14 +88,42 @@ def anadongu():
 				
 				
 				baslik="<h1>KUCUKAGAOGLU DATAS</h1><br>"
+                                html_zaman="<p>Zaman: "+str(zaman)+"</p><br>"""
 				html_sicaklik="<p>Sicaklik: "+str(dt)+" C</p><br>"
 				html_nem="<p>Nem: "+str(dh)+" %Rh</p><br>"
 				
 				dosya=open(r"/var/www/index.html","w")
 				
-				dosya.write(baslik+html_sicaklik+html_nem)	
+				dosya.write(baslik+html_zaman+html_sicaklik+html_nem)	
 				dosya.close()
+		
+				#DB isleme
+
+                                
+                                vt=float(ort_sicaklik)
+				vh=float(ort_nem)
+
+				print vt,vh
 				
+				sql = "INSERT INTO logger(zaman,isi,nem) VALUES (now(),"+str(vt)+","+str(vh)+")"
+                        #        sql = "INSERT INTO logger(zaman,isi,nem) VALUES (now(),22.5,44.5)"
+				try:
+   # Execute ile SQL kodlarını çalıştırıyoruz.
+				    cursor.execute(sql)
+   # Commit ile veritabanında değişikleri gerçekleştiriyoruz.
+                                    db.commit()
+                                    print "EKLENDI!!!"
+				except:
+   # Hata olursa işlemleri geri al
+				    db.rollback()
+
+# Veritabanından çıkış yap
+				#db.close()	
+
+
+
+
+		
 				## HEPSINI SIFIRLA!
 				olcum=0
 				toplam_sicaklik=0
