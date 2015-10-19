@@ -221,6 +221,11 @@ def anadongu():
 				dh=str(float(ort_nem)).replace('.',',')
 					
 				values2 = [zaman,dt,dh]         
+				
+				##--VERİTABANINA EKLE
+				
+				veritabanina_ekle(kayit_mekani,ort_sicaklik,ort_nem)
+				
 				print values2, " eklendi..."	
 				
 						
@@ -249,9 +254,7 @@ def anadongu():
 				dosya.write(google_chart_sayfa_kodlari)	
 				dosya.close()
 				
-				##--VERİTABANINA EKLE
 				
-				veritabanina_ekle(kayit_mekani,ort_sicaklik,ort_nem)
 	
 				## --SAYACLARIN HEPSINI SIFIRLA!
 				olcum=0
