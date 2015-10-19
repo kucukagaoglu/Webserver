@@ -53,7 +53,7 @@ def google_chart_olustur(satirlar):
 	table2=""
 	try:
 		for satir in satirlar:
-			table2=table2+"['"+str(satir[0])+"',"+str(satir[1])+","+str(satir[2])+"],"
+			table2=table2+"['"+str(satir[1])+"',"+str(satir[2])+","+str(satir[3])+"],"
 		return table2
 	
 	except e:
@@ -61,11 +61,11 @@ def google_chart_olustur(satirlar):
 		
 ######################################################################		
 		
-
+kayit_mekani=raw_input("Kayit yapilan yeri giriniz: ")
 sayfa2="""
 				]);
 		var options = {
-		  title: 'Kucukagaogullari Ev Sicaklik&Nem',
+		  title: '%s',
 		  curveType: 'function',
 		  legend: { position: 'bottom' }
 		};
@@ -81,7 +81,7 @@ sayfa2="""
   </body>
 </html>
 
-				"""
+				"""%(kayit_mekani)
 
 ######################################################################
 
@@ -120,9 +120,9 @@ def tablo_olustur(satirlar):
 	return tablo	
 	
 
-def	veritabanina_ekle(par1,par2):
+def	veritabanina_ekle(yers,par1,par2):
 				
-	sql = "INSERT INTO logger(zaman,isi,nem) VALUES (now(),"+str(float(par1))+","+str(float(par2))+")"
+	sql = "INSERT INTO logger(yer,zaman,isi,nem) VALUES ('"+yers+"',now(),"+str(float(par1))+","+str(float(par2))+")"
 						#        sql = "INSERT INTO logger(zaman,isi,nem) VALUES (now(),22.5,44.5)"	
  	
 	try:
@@ -185,6 +185,8 @@ def anadongu():
 	print "**************************************************"	
 	gosterilen_sayisi=input("Grafikte kac adet veri gosterilsin?")
 	print "**************************************************"
+	
+
 
 	# TEMELDE DONEN DONGU
 	while True:		
@@ -249,7 +251,7 @@ def anadongu():
 				
 				##--VERİTABANINA EKLE
 				
-				veritabanina_ekle(ort_sicaklik,ort_nem)
+				veritabanina_ekle(kayit_mekani,ort_sicaklik,ort_nem)
 	
 				## --SAYACLARIN HEPSINI SIFIRLA!
 				olcum=0
@@ -280,4 +282,3 @@ def anadongu():
 if __name__=="__main__":	
 
 	anadongu()
-
